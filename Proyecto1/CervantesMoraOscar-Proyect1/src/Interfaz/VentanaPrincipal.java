@@ -43,7 +43,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jButton2.setText("Registrar Celebraciones");
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setTitle("Listado de Celebraciones - Inicio");
+        setTitle("Celebraciones - Inicio");
         setLocation(new java.awt.Point(0, 0));
         setSize(new java.awt.Dimension(400, 600));
 
@@ -61,6 +61,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
 
         btnEditarCelebraciones.setText("Editar Celebraciones");
+        btnEditarCelebraciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnEditarCelebracionesMouseClicked(evt);
+            }
+        });
 
         btnInvertirNombrePais.setText("Invertir nombre de países");
 
@@ -141,6 +146,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         consultarCelebraciones.setVisible(true);
         VentanaPrincipal.this.dispose();
     }//GEN-LAST:event_btnConsultarCelebracionesActionPerformed
+
+    private void btnEditarCelebracionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnEditarCelebracionesMouseClicked
+        // TODO add your handling code here:
+        EditarCelebracion editarCelebracion = new EditarCelebracion();
+        editarCelebracion.setVisible(true);
+        VentanaPrincipal.this.dispose();
+    }//GEN-LAST:event_btnEditarCelebracionesMouseClicked
 
     /**
      * @param args the command line arguments

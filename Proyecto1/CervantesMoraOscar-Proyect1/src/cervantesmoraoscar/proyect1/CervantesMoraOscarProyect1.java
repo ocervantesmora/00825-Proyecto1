@@ -3,7 +3,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package cervantesmoraoscar.proyect1;
-import Interfaz.*;
+import Interfaz.VentanaPrincipal;
+import Entidades.Celebracion;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,6 +18,8 @@ public class CervantesMoraOscarProyect1 {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+        ArrayList<Celebracion> listaDeCelebraciones = new ArrayList();
+        
         VentanaPrincipal ventana = new VentanaPrincipal();
         ventana.setVisible(true);
     }
