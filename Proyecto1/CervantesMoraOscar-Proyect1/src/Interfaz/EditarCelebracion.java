@@ -3,7 +3,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Interfaz;
-import com.toedter.calendar.JDateChooser;
+import AccesoADatos.CelebracionAD;
+import Entidades.Celebracion;
+import Utils.Utils;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Iterator;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -12,6 +21,8 @@ import com.toedter.calendar.JDateChooser;
 public class EditarCelebracion extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(EditarCelebracion.class.getName());
+    private DefaultTableModel modeloTabla;
+    private int idSeleccionado = -1;
 
     /**
      * Creates new form EditarCelebracion
@@ -19,6 +30,40 @@ public class EditarCelebracion extends javax.swing.JFrame {
     public EditarCelebracion() {
         initComponents();
         setLocationRelativeTo(null); // PAra que la ventana aparezca en el centro de la pantalla, y no en un punto específico
+        configurarTabla();
+    }
+    
+        private void configurarTabla(){
+        String[] nombresColumnas = {"ID", "Fecha", "Descripción", "País"};
+        modeloTabla = new DefaultTableModel(nombresColumnas, 0) {
+            //Convierte las celdas de la tabla en No Editables
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        // Asigna el modelo recién creado a la tabla que va a mostar los datos
+        tblResultadosBusqueda.setModel(modeloTabla);
+    }
+    
+    private void cargarDatosEnTabla(){
+        modeloTabla.setRowCount(0);
+        ArrayList<Celebracion> listaDeCelebraciones = CelebracionAD.consultarCelebraciones();
+        Iterator<Celebracion> iterador = listaDeCelebraciones.iterator();
+        String textoBuscado = txtBuscarCelebracion.getText().toLowerCase();
+
+        while(iterador.hasNext()){
+            Celebracion celebracion = iterador.next();
+            if(celebracion.getPais().toLowerCase().contains(textoBuscado)){
+                Object[] fila = new Object[4];
+                fila[0] = celebracion.getIdDeLaCelebracion();
+                fila[1] = celebracion.getFecha();
+                fila[2] = celebracion.getDescripcion();
+                fila[3] = celebracion.getPais();
+
+                modeloTabla.addRow(fila);
+            }
+        }
     }
 
     /**
@@ -34,7 +79,7 @@ public class EditarCelebracion extends javax.swing.JFrame {
         txtBuscarCelebracion = new javax.swing.JTextField();
         btnBuscarCelebracion = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblResultadosBusqueda = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -52,9 +97,14 @@ public class EditarCelebracion extends javax.swing.JFrame {
         jLabel1.setText("Editar Celebraciones");
         jLabel1.setToolTipText("");
 
-        btnBuscarCelebracion.setText("Buscar");
+        btnBuscarCelebracion.setText("Buscar por país");
+        btnBuscarCelebracion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBuscarCelebracionMouseClicked(evt);
+            }
+        });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblResultadosBusqueda.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -65,7 +115,12 @@ public class EditarCelebracion extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        tblResultadosBusqueda.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblResultadosBusquedaMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(tblResultadosBusqueda);
 
         jLabel2.setText("Fecha:");
 
@@ -76,6 +131,11 @@ public class EditarCelebracion extends javax.swing.JFrame {
         txtDescripcion.setToolTipText("");
 
         btnGuardar.setText("GUARDAR");
+        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnGuardarMouseClicked(evt);
+            }
+        });
 
         btnCancelar.setText("VOLVER");
         btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -99,30 +159,31 @@ public class EditarCelebracion extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 388, Short.MAX_VALUE)
                             .addComponent(txtBuscarCelebracion)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(155, 155, 155)
-                        .addComponent(btnBuscarCelebracion)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(65, 65, 65)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnCancelar))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel2))
-                        .addGap(48, 48, 48)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(txtDescripcion)
-                            .addComponent(txtPais, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
-                            .addComponent(jdcFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(65, 65, 65)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(btnGuardar)
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(btnCancelar))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel3)
+                                            .addComponent(jLabel4)
+                                            .addComponent(jLabel2))
+                                        .addGap(48, 48, 48)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(txtDescripcion)
+                                            .addComponent(txtPais, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
+                                            .addComponent(jdcFecha, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(96, 96, 96)
+                                .addComponent(btnBuscarCelebracion, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -164,6 +225,68 @@ public class EditarCelebracion extends javax.swing.JFrame {
         ventana.setVisible(true);
     }//GEN-LAST:event_btnCancelarMouseClicked
 
+    private void btnBuscarCelebracionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBuscarCelebracionMouseClicked
+        // TODO add your handling code here:
+        cargarDatosEnTabla();
+    }//GEN-LAST:event_btnBuscarCelebracionMouseClicked
+
+    private void tblResultadosBusquedaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblResultadosBusquedaMouseClicked
+        // TODO add your handling code here:
+        int filaSeleccionada = tblResultadosBusqueda.getSelectedRow();
+        
+        idSeleccionado = (int) modeloTabla.getValueAt(filaSeleccionada,0);
+        
+        //Cuando se lee la tabla, se obtienen objetos tipo Object. Es necesario convertirlos al
+        LocalDate fechaOriginal = (LocalDate) modeloTabla.getValueAt(filaSeleccionada,1); 
+        Date fechaSeleccionada = Date.from(fechaOriginal.atStartOfDay(ZoneId.systemDefault()).toInstant());
+        jdcFecha.setDate(fechaSeleccionada);
+        
+        txtDescripcion.setText(modeloTabla.getValueAt(filaSeleccionada,2).toString());
+        txtPais.setText(modeloTabla.getValueAt(filaSeleccionada,3).toString());
+    }//GEN-LAST:event_tblResultadosBusquedaMouseClicked
+
+    private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
+        // TODO add your handling code here:
+        
+        if(idSeleccionado!= -1) {
+            String validar = validarDatos();
+            if(Utils.isNullOrWhiteSpace(validar)){
+                ArrayList<Celebracion> listaDeCelebraciones = CelebracionAD.consultarCelebraciones();
+                Iterator<Celebracion> iterador = listaDeCelebraciones.iterator();
+                while(iterador.hasNext()){
+                    Celebracion celebracion = iterador.next();
+                    if(celebracion.getIdDeLaCelebracion()==idSeleccionado){
+                            celebracion.setFecha(jdcFecha.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                            celebracion.setDescripcion(txtDescripcion.getText());
+                            celebracion.setPais(txtPais.getText());
+                            break;
+                    }
+                }
+            }
+            else {
+                JOptionPane.showMessageDialog(this,validar);
+            }
+        }
+        else {
+            JOptionPane.showMessageDialog(this,"Debe seleccionar una celebración para poder editarla.");
+        }
+    }//GEN-LAST:event_btnGuardarMouseClicked
+
+        private String validarDatos(){
+        //Método para validar que ninguno de los campos haya quedado vacío
+        String validacion = "";
+        if(jdcFecha.getDate()==null){
+            return "Ingrese una fecha válida.";
+        }
+        else if(Utils.isNullOrWhiteSpace(txtDescripcion.getText())){
+            return "Ingrese una descripción válida.";
+        }
+        else if(Utils.isNullOrWhiteSpace(txtPais.getText())){
+            return "Ingrese un país válido.";
+        }
+        return validacion;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -198,8 +321,8 @@ public class EditarCelebracion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private com.toedter.calendar.JDateChooser jdcFecha;
+    private javax.swing.JTable tblResultadosBusqueda;
     private javax.swing.JTextField txtBuscarCelebracion;
     private javax.swing.JTextField txtDescripcion;
     private javax.swing.JTextField txtPais;

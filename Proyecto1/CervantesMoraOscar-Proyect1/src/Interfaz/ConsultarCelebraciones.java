@@ -57,7 +57,6 @@ public class ConsultarCelebraciones extends javax.swing.JFrame {
             
             modeloTabla.addRow(fila);
         }
-    
     }
     
     /**
