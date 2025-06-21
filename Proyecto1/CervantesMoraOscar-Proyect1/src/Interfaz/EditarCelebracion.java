@@ -75,9 +75,9 @@ public class EditarCelebracion extends javax.swing.JFrame {
 
         txtDescripcion.setToolTipText("");
 
-        btnGuardar.setText("Guardar");
+        btnGuardar.setText("GUARDAR");
 
-        btnCancelar.setText("Cancelar");
+        btnCancelar.setText("VOLVER");
         btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnCancelarMouseClicked(evt);

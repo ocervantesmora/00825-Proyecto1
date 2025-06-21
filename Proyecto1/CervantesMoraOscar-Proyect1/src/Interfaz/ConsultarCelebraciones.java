@@ -4,6 +4,13 @@
  */
 package Interfaz;
 
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
+import java.util.Iterator;
+import Entidades.Celebracion;
+import AccesoADatos.CelebracionAD;
+
+
 /**
  *
  * @author ocerv
@@ -11,15 +18,48 @@ package Interfaz;
 public class ConsultarCelebraciones extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(ConsultarCelebraciones.class.getName());
-
+    private DefaultTableModel modeloTabla;
     /**
      * Creates new form ConsultarCelebraciones
      */
     public ConsultarCelebraciones() {
         initComponents();
         setLocationRelativeTo(null); // PAra que la ventana aparezca en el centro de la pantalla, y no en un punto específico
+        configurarTabla();
+        cargarDatosEnTabla();
     }
 
+    private void configurarTabla(){
+        String[] nombresColumnas = {"ID", "Fecha", "Descripción", "País"};
+        modeloTabla = new DefaultTableModel(nombresColumnas, 0) {
+            //Convierte las celdas de la tabla en No Editables
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        // Asigna el modelo recién creado a la tabla que va a mostar los datos
+        tblConsulta.setModel(modeloTabla);
+    }
+    
+    private void cargarDatosEnTabla(){
+        modeloTabla.setRowCount(0);
+        ArrayList<Celebracion> listaDeCelebraciones = CelebracionAD.consultarCelebraciones();
+        Iterator<Celebracion> iterador = listaDeCelebraciones.iterator();
+
+        while(iterador.hasNext()){
+            Celebracion celebracion = iterador.next();
+            Object[] fila = new Object[4];
+            fila[0] = celebracion.getIdDeLaCelebracion();
+            fila[1] = celebracion.getFecha();
+            fila[2] = celebracion.getDescripcion();
+            fila[3] = celebracion.getPais();
+            
+            modeloTabla.addRow(fila);
+        }
+    
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -34,7 +74,7 @@ public class ConsultarCelebraciones extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         btnCancelar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable2 = new javax.swing.JTable();
+        tblConsulta = new javax.swing.JTable();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -54,17 +94,18 @@ public class ConsultarCelebraciones extends javax.swing.JFrame {
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Registrar Celebración");
+        jLabel1.setText("Consultar Celebraciones");
         jLabel1.setToolTipText("");
 
-        btnCancelar.setLabel("CANCELAR");
+        btnCancelar.setText("VOLVER");
+        btnCancelar.setActionCommand("VOLVER");
         btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnCancelarMouseClicked(evt);
             }
         });
 
-        jTable2.setModel(new javax.swing.table.DefaultTableModel(
+        tblConsulta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -75,7 +116,7 @@ public class ConsultarCelebraciones extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane2.setViewportView(jTable2);
+        jScrollPane2.setViewportView(tblConsulta);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -101,9 +142,9 @@ public class ConsultarCelebraciones extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 410, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 34, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 402, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 48, Short.MAX_VALUE)
                 .addComponent(btnCancelar, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
@@ -118,6 +159,7 @@ public class ConsultarCelebraciones extends javax.swing.JFrame {
         ventana.setVisible(true);
     }//GEN-LAST:event_btnCancelarMouseClicked
 
+   
     /**
      * @param args the command line arguments
      */
@@ -149,6 +191,6 @@ public class ConsultarCelebraciones extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTable jTable2;
+    private javax.swing.JTable tblConsulta;
     // End of variables declaration//GEN-END:variables
 }

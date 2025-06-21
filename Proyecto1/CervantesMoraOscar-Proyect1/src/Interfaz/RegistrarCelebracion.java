@@ -4,7 +4,12 @@
  */
 package Interfaz;
 
+import Entidades.Celebracion;
+import AccesoADatos.CelebracionAD;
 import com.toedter.calendar.JDateChooser;
+import java.time.ZoneId;
+import javax.swing.JOptionPane;
+import Utils.Utils;
 
 /**
  *
@@ -57,7 +62,7 @@ public class RegistrarCelebracion extends javax.swing.JFrame {
 
         txtDescripcion.setToolTipText("");
 
-        btnCancelar.setLabel("CANCELAR");
+        btnCancelar.setText("VOLVER");
         btnCancelar.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 btnCancelarMouseClicked(evt);
@@ -65,6 +70,11 @@ public class RegistrarCelebracion extends javax.swing.JFrame {
         });
 
         btnGuardar.setLabel("GUARDAR");
+        btnGuardar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnGuardarMouseClicked(evt);
+            }
+        });
 
         jdcFecha.setDateFormatString("yyyy-MM-dd");
         jdcFecha.setMinSelectableDate(new java.util.Date(-62135744333000L));
@@ -134,6 +144,31 @@ public class RegistrarCelebracion extends javax.swing.JFrame {
         ventana.setVisible(true);
     }//GEN-LAST:event_btnCancelarMouseClicked
 
+    private void btnGuardarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnGuardarMouseClicked
+        // TODO add your handling code here:
+        String validar = validarDatos();
+        if(Utils.isNullOrWhiteSpace(validar)){
+            Celebracion celebracion = new Celebracion(
+                    jdcFecha.getDate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate(),
+                    txtDescripcion.getText(),
+                    txtPais.getText()
+            );
+            boolean guardadoCorrecto = CelebracionAD.registrarCelebracion(celebracion);
+            if(!guardadoCorrecto){
+                JOptionPane.showMessageDialog(this,"No se pudo guardar la celebración. Por favor revise los datos.");
+            }
+            else {
+                jdcFecha.setDate(null);
+                txtDescripcion.setText("");
+                txtPais.setText("");
+            }
+        }
+        else{
+            JOptionPane.showMessageDialog(this,validar);
+        }
+        
+    }//GEN-LAST:event_btnGuardarMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -157,6 +192,23 @@ public class RegistrarCelebracion extends javax.swing.JFrame {
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new RegistrarCelebracion().setVisible(true));
+    }
+    
+
+    
+    private String validarDatos(){
+        //Método para validar que ninguno de los campos haya quedado vacío
+        String validacion = "";
+        if(jdcFecha.getDate()==null){
+            return "Ingrese una fecha válida.";
+        }
+        else if(Utils.isNullOrWhiteSpace(txtDescripcion.getText())){
+            return "Ingrese una descripción válida.";
+        }
+        else if(Utils.isNullOrWhiteSpace(txtPais.getText())){
+            return "Ingrese un país válido.";
+        }
+        return validacion;
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
