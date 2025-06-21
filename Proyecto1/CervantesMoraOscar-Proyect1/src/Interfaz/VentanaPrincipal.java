@@ -68,6 +68,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
 
         btnInvertirNombrePais.setText("Invertir nombre de países");
+        btnInvertirNombrePais.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnInvertirNombrePaisMouseClicked(evt);
+            }
+        });
 
         btnOrdenarCelebraciones.setText("Ordenar Celebraciones");
 
@@ -153,6 +158,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         editarCelebracion.setVisible(true);
         VentanaPrincipal.this.dispose();
     }//GEN-LAST:event_btnEditarCelebracionesMouseClicked
+
+    private void btnInvertirNombrePaisMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnInvertirNombrePaisMouseClicked
+        // TODO add your handling code here:
+        InvertirPaises invertirPaises = new InvertirPaises();
+        invertirPaises.setVisible(true);
+        VentanaPrincipal.this.dispose();
+    }//GEN-LAST:event_btnInvertirNombrePaisMouseClicked
 
     /**
      * @param args the command line arguments

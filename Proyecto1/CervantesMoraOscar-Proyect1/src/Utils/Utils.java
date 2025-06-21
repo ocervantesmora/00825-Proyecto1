@@ -14,4 +14,17 @@ public class Utils {
         // Revisa si el string parámetro es null o si son solamente espacios en blanco
         return pString == null || pString.trim().isEmpty();
     }
+    
+    public static String invertirString(String pString){
+        // Condición de parada: cuando el string restante es de longitud 1.
+        // Para este caso se toma en cuenta tambiérn la posibilidad de que el string sea nulo o vacío.
+        // En este caso, la lógica de recursividad es tomar el último caracter y concatenarlo al resultado de aplicar esta misma función pero al resto del string (sin el último caracter)
+        if(pString == null || pString.isEmpty() || pString.length() == 1) return pString;
+        
+        char ultimoCaracter = pString.charAt(pString.length()-1);
+        
+        String restoDelString = pString.substring(0,pString.length()-1);
+        
+        return ultimoCaracter + invertirString(restoDelString);
+    }
 }
