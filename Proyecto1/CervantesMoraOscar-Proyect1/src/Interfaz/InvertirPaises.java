@@ -11,9 +11,12 @@ import java.util.Iterator;
 import javax.swing.table.DefaultTableModel;
 import Utils.Utils;
 
-/**
- *
- * @author ocerv
+/* UNED II Cuatrimestre
+ * 00825 - Estructuras de datos
+ * Proyecto 1: Sistema de gestión de celebraciones
+ * Estudiante: Oscar Eduardo Cervantes Mora
+ * Fecha: 2025-06-22
+ * @author ocervantesmora
  */
 public class InvertirPaises extends javax.swing.JFrame {
     

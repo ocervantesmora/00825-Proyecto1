@@ -6,9 +6,12 @@ package Entidades;
 
 import java.time.LocalDate;
         
-/**
- *
- * @author ocerv
+/* UNED II Cuatrimestre
+ * 00825 - Estructuras de datos
+ * Proyecto 1: Sistema de gestión de celebraciones
+ * Estudiante: Oscar Eduardo Cervantes Mora
+ * Fecha: 2025-06-22
+ * @author ocervantesmora
  */
 public class Celebracion {
     // Atributos de la entidad Celebracion
