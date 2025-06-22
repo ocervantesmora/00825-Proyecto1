@@ -33,7 +33,7 @@ public class EditarCelebracion extends javax.swing.JFrame {
         configurarTabla();
     }
     
-        private void configurarTabla(){
+    private void configurarTabla(){
         String[] nombresColumnas = {"ID", "Fecha", "Descripción", "País"};
         modeloTabla = new DefaultTableModel(nombresColumnas, 0) {
             //Convierte las celdas de la tabla en No Editables

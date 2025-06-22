@@ -75,6 +75,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         });
 
         btnOrdenarCelebraciones.setText("Ordenar Celebraciones");
+        btnOrdenarCelebraciones.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnOrdenarCelebracionesMouseClicked(evt);
+            }
+        });
 
         btnRegistrarCelebraciones.setText("Registrar Celebraciones");
         btnRegistrarCelebraciones.addActionListener(new java.awt.event.ActionListener() {
@@ -165,6 +170,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         invertirPaises.setVisible(true);
         VentanaPrincipal.this.dispose();
     }//GEN-LAST:event_btnInvertirNombrePaisMouseClicked
+
+    private void btnOrdenarCelebracionesMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnOrdenarCelebracionesMouseClicked
+        // TODO add your handling code here:
+        OrdenarCelebraciones ordenarCelebraciones = new OrdenarCelebraciones();
+        ordenarCelebraciones.setVisible(true);
+        VentanaPrincipal.this.dispose();
+    }//GEN-LAST:event_btnOrdenarCelebracionesMouseClicked
 
     /**
      * @param args the command line arguments

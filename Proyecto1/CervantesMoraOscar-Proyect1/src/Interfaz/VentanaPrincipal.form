@@ -120,6 +120,9 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Ordenar Celebraciones"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnOrdenarCelebracionesMouseClicked"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="btnRegistrarCelebraciones">
       <Properties>
